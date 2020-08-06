@@ -6,7 +6,7 @@ import numpy as np
 import predict_def
 from sklearn.preprocessing import LabelBinarizer
 from sklearn.preprocessing import LabelEncoder
-from sklearn.cross_validation import train_test_split
+from sklearn.model_selection import train_test_split
 np.random.seed(0)
 
 subset = None
