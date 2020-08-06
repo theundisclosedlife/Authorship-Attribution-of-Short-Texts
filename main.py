@@ -52,10 +52,11 @@ vocab, reverse_vocab, vocab_size, check = predict_def.create_vocab_set()
 X_train, X_test, y_train, y_test = train_test_split(X, Y, random_state=1)
 
 print('Build model...')
-model = predict_def.model(filter_kernels, dense_outputs, maxlen, vocab_size,
+# model = predict_def.model(filter_kernels, dense_outputs, maxlen, vocab_size,
                        nb_filter, cat_output)
-#model = predict_def.model2(filter_kernels, dense_outputs, maxlen, vocab_size,
-#                       nb_filter, cat_output)      For Charater Embedding use this model and change encoding function in predict_def
+model = predict_def.model2(filter_kernels, dense_outputs, maxlen, vocab_size,
+                       nb_filter, cat_output)      
+# For Charater Embedding use this model and change encoding function in predict_def
 print('Fit model...') 
 initial = datetime.datetime.now()
 print (len(X_test), len(y_test))
