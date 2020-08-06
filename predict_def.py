@@ -125,7 +125,7 @@ def mini_batch_generator(x, y, vocab, vocab_size, vocab_check, maxlen,
         y_sample = y[i:i + batch_size]
 
 #         input_data = encode_data(x_sample, maxlen, vocab, vocab_size,
-                                 vocab_check)
+#                                  vocab_check)
         input_data = encode_data2(x_sample, maxlen, vocab, vocab_size,
                                  vocab_check)
         yield (input_data, y_sample)
