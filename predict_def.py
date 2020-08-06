@@ -66,17 +66,32 @@ def model2(filter_kernels, dense_outputs, maxlen, vocab_size, nb_filter,
     Embedding_layer  = Embedding(vocab_size+1, d, input_length=maxlen)
     inputs = Input(shape=(maxlen,), name='input', dtype='float32')
     embed = Embedding_layer(inputs)
+    embed = Dropout(0.25)(embed)
+    
     conv = Convolution1D(nb_filter=nb_filter, filter_length=filter_kernels[0],
                              border_mode='valid', activation='relu',
                              input_shape=(maxlen, d))(embed)
-    conv = MaxPooling1D(pool_length=3)(conv)
-
+    conv = tf.keras.layers.GlobalMaxPooling1D(data_format="channels_first")(conv)
+    
+#     conv = MaxPooling1D(pool_length=3)(conv)
+    
     conv1 = Convolution1D(nb_filter=nb_filter, filter_length=filter_kernels[1],
-                          border_mode='valid', activation='relu')(conv)
-    conv1 = MaxPooling1D(pool_length=3)(conv1)
-
+                             border_mode='valid', activation='relu',
+                             input_shape=(maxlen, d))(embed)
+    conv1 = tf.keras.layers.GlobalMaxPooling1D(data_format="channels_first")(conv1)
+    
     conv2 = Convolution1D(nb_filter=nb_filter, filter_length=filter_kernels[2],
-                          border_mode='valid', activation='relu')(conv1)
+                             border_mode='valid', activation='relu',
+                             input_shape=(maxlen, d))(embed)
+    conv2 = tf.keras.layers.GlobalMaxPooling1D(data_format="channels_first")(conv2)
+    
+    concatted = tf.keras.layers.Concatenate()([conv, conv1, conv2])
+#     conv1 = Convolution1D(nb_filter=nb_filter, filter_length=filter_kernels[1],
+#                           border_mode='valid', activation='relu')(conv)
+#     conv1 = MaxPooling1D(pool_length=3)(conv1)
+
+#     conv2 = Convolution1D(nb_filter=nb_filter, filter_length=filter_kernels[2],
+#                           border_mode='valid', activation='relu')(conv1)
 
     # conv3 = Convolution1D(nb_filter=nb_filter, filter_length=filter_kernels[3],
     #                       border_mode='valid', activation='relu')(conv2)
@@ -86,11 +101,11 @@ def model2(filter_kernels, dense_outputs, maxlen, vocab_size, nb_filter,
 
     # conv5 = Convolution1D(nb_filter=nb_filter, filter_length=filter_kernels[5],---------
     #                       border_mode='valid', activation='relu')(conv4)
-    conv5 = MaxPooling1D(pool_length=3)(conv2)
-    conv = Flatten()(conv)
+#     conv5 = MaxPooling1D(pool_length=3)(conv2)
+#     conv = Flatten()(conv)
 
     #Two dense layers with dropout of .5
-    z = Dropout(0.5)(Dense(dense_outputs, activation='relu')(conv))
+    z = Dense(dense_outputs, activation='relu')(concatted)
     # z = Dropout(0.5)(Dense(dense_outputs, activation='relu')(z))
 
     pred = Dense(cat_output, activation='softmax', name='output')(z)
