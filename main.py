@@ -55,7 +55,7 @@ print('Build model...')
 # model = predict_def.model(filter_kernels, dense_outputs, maxlen, vocab_size,
 #                        nb_filter, cat_output)
 model = predict_def.model2(filter_kernels, dense_outputs, maxlen, vocab_size,
-                       nb_filter, cat_output)      
+                           nb_filter, cat_output)      
 # For Charater Embedding use this model and change encoding function in predict_def
 print('Fit model...') 
 initial = datetime.datetime.now()
