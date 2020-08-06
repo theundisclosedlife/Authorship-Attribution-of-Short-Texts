@@ -53,7 +53,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, Y, random_state=1)
 
 print('Build model...')
 # model = predict_def.model(filter_kernels, dense_outputs, maxlen, vocab_size,
-                       nb_filter, cat_output)
+#                        nb_filter, cat_output)
 model = predict_def.model2(filter_kernels, dense_outputs, maxlen, vocab_size,
                        nb_filter, cat_output)      
 # For Charater Embedding use this model and change encoding function in predict_def
